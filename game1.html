@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State of Matter Game</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEJb3QusRr6hWolDVGJ9tHq5u4k8r+uUgQDxZBq2XyXtQqtB+/FJyChj2MZwB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            position: relative;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            gap: 50px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .droppable {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #stove {
+            background: url('pan.gif') no-repeat center center;
+            background-size: cover;
+            border: 2px solid #ff6f61;
+        }
+
+        #freezer {
+            background: url('refrigerator.gif') no-repeat center center;
+            background-size: cover;
+            border: 2px solid #58a4b0;
+        }
+
+        .ice-cube {
+            width: 80px;
+            height: 80px;
+            background: url('ice-cubes.png') no-repeat center center;
+            background-size: contain;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            transition: all 2s ease-in-out;
+        }
+
+        .melted {
+            background: url('water-drop.gif') no-repeat center center;
+            background-size: contain;
+            width: 90px;
+            height: 60px;
+            transform: scale(1.2);
+            opacity: 0.7;
+        }
+
+        .frozen {
+            background: url('ice-cubes.png') no-repeat center center;
+            background-size: contain;
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        #cookingEffect,
+        #freezingEffect {
+            display: none;
+            position: absolute;
+            top: 20%;
+            /* Ekranın ortasından biraz daha aşağıda */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #cookingEffect img,
+        #freezingEffect img {
+            width: 200px;
+            height: auto;
+        }
+
+        /* Back button styles */
+        .back-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Back Button -->
+    <button class="back-btn" onclick="goBack()">
+        <i class="bi bi-arrow-left-circle-fill"></i>
+        Back
+    </button>
+
+    <!-- Main Game Container -->
+    <div class="container">
+        <div id="stove" class="droppable"></div>
+        <div id="iceCube" class="ice-cube" draggable="true"></div>
+        <div id="freezer" class="droppable"></div>
+    </div>
+
+    <!-- Cooking and Freezing Effects -->
+    <div id="cookingEffect">
+        <h1 class="display-6">Wait, we are cooking the ice!</h1>
+        <img src="cookingtheice.gif" alt="Cooking Ice Animation">
+    </div>
+    <div id="freezingEffect">
+        <h1 class="display-6">Wait, we are freezing the water!</h1>
+        <img src="snowflake.gif" alt="Freezing Water Animation">
+    </div>
+
+    <!-- Bootstrap 5 JS and Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz4fnFO9gybA1p0FJL7z0hOjpq4p7Z2jppn9FYYpyeUUQ3CZQXyWpg5dPk"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+        integrity="sha384-pzjw8f+ua7Kw1TIq0B8FQzGCJdc7t7s/ZtT0wF3F2F76OnmcN5jbFn7T4C5h7/Bh"
+        crossorigin="anonymous"></script>
+
+    <script>
+        const iceCube = document.getElementById("iceCube");
+        const stove = document.getElementById("stove");
+        const freezer = document.getElementById("freezer");
+        const cookingEffect = document.getElementById("cookingEffect");
+        const freezingEffect = document.getElementById("freezingEffect");
+
+        iceCube.addEventListener("dragstart", (event) => {
+            event.dataTransfer.setData("text", event.target.id);
+        });
+
+        [stove, freezer].forEach((target) => {
+            target.addEventListener("dragover", (event) => {
+                event.preventDefault();
+            });
+
+            target.addEventListener("drop", (event) => {
+                event.preventDefault();
+                let droppedElement = document.getElementById(event.dataTransfer.getData("text"));
+
+                if (target.id === "stove") {
+                    cookingEffect.style.display = "block";
+                    setTimeout(() => {
+                        cookingEffect.style.display = "none";
+                        droppedElement.classList.add("melted");
+                        droppedElement.classList.remove("frozen");
+                    }, 3000);
+                } else if (target.id === "freezer") {
+                    freezingEffect.style.display = "block";
+                    setTimeout(() => {
+                        freezingEffect.style.display = "none";
+                        droppedElement.classList.remove("melted");
+                        droppedElement.classList.add("frozen");
+                    }, 3000);
+                }
+            });
+        });
+
+        // Go back function
+        function goBack() {
+            window.location.href = "menu.html";// Geri gitmek için tarayıcı geçmişini kullan
+        }
+    </script>
+
+</body>
+
+</html>
