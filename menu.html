@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -12,7 +15,8 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background: url('background.gif') no-repeat center center fixed;
+            background-size: cover;
             position: relative;
         }
         .container {
@@ -40,20 +44,39 @@
 </head>
 <body>
     <div class="container">
-        <h1>Game Menu</h1>
-        <button class="menu-btn" onclick="startGame()">Melt and Freeze</button>
-        <button class="menu-btn" onclick="waterCycle()">Matter Crafter</button>
-        <div id="message" class="message"></div>
+        
+        <div class="row"><h1>Game Menu</h1></div>
+        <div class="row"><div class="col-sm"><button class="menu-btn" onclick="game1()">Melt and Freeze</button></div></div>
+        <div class="row"><div class="col-sm"><button class="menu-btn" onclick="game2()">Matter Crafter</button></div></div>
+        <div class="row"><div class="col-sm"><button class="menu-btn" onclick="waterCycle()">Water Cycle</button></div></div>
+        <div class="row"><div class="col-sm"><button class="menu-btn" onclick="whatWillBe()">What will be?</button></div></div>
+        <div class="row"><div class="col-sm"><button class="menu-btn" onclick="whatItis()">What it is</button></div></div>
     </div>
 
     <script>
-        function startGame() {
+        function game1() {
             window.location.href = "game1.html"; // State of Matter Game sayfasına yönlendirme
         }
 
-        function waterCycle() {
+        function game2() {
             window.location.href = "game2.html"; // State of Matter Game sayfasına yönlendirme
         }
+
+        function waterCycle() {
+            window.location.href = "watercycle.html"; // State of Matter Game sayfasına yönlendirme
+        }
+        function whatWillBe() {
+            window.location.href = "whatwillbe.html"; // State of Matter Game sayfasına yönlendirme
+        }
+        function whatItis() {
+            window.location.href = "whatitis.html"; // State of Matter Game sayfasına yönlendirme
+        }
     </script>
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+     crossorigin="anonymous"></script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+     integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+     crossorigin="anonymous"></script>
 </body>
 </html>
